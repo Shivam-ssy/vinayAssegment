@@ -16,7 +16,7 @@ const StudentProvider = ({ children }) => {
           setLoading(false)
           return        
         }
-        const res=await fetch(`${import.meta.env.VITE_API_URL}'/data'`)
+        const res=await fetch(`${import.meta.env.VITE_API_URL}/data`)
         const data=await res.json().finally(()=>setLoading(false))
         console.log(data)
         setStudentData(data)
