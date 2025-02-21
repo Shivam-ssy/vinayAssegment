@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Card, CardContent } from '../components/ui/card';
 import { ChevronDown, Book, Brain, Target, User, MessageSquare, Star } from 'lucide-react';
 import { useParams } from 'react-router-dom';
-import { StudentContext } from '../context/context';
+import { StudentContext } from '../context/Context.jsx';
 
 const StudentDetailPage = () => {
   const {studentsDatas,loading}=useContext(StudentContext)
