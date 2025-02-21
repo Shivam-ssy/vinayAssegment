@@ -7,23 +7,40 @@ const StudentProvider = ({ children }) => {
     const [studentsDatas, setStudentData] = useState(null)
     const [loading,setLoading]=useState(true)
     useEffect(() => {
-      const get=async()=>{
-        console.log('start fetching');
-        setLoading(true)
-        if (!JSON.parse(localStorage.getItem('studentsData'))) {
-          console.log('data from local storage',JSON.parse(localStorage.getItem('studentsData')));
-          setStudentData(JSON.parse(localStorage.getItem('studentsData')))
-          setLoading(false)
-          return        
+      const getStudentsData = async () => {
+        console.log("Start fetching...");
+        setLoading(true);
+    
+        try {
+          const storedData = localStorage.getItem("studentsData");
+          // console.log("Stored Data:", storedData.length);
+          
+          if ( storedData && storedData.length > 0 ) {
+            console.log("Data from local storage:", JSON.parse(storedData));
+            setStudentData(JSON.parse(storedData));
+            return; // Exit function early
+          }
+    
+          console.log(import.meta.env.VITE_API_URL);
+    
+          const res = await fetch(`${import.meta.env.VITE_API_URL}/data`);
+          if (!res.ok) throw new Error("Failed to fetch data");
+    
+          const data = await res.json();
+          console.log("Fetched Data:", data);
+    
+          setStudentData(data);
+          localStorage.setItem("studentsData", JSON.stringify(data));
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false);
         }
-        const res=await fetch(`${import.meta.env.VITE_API_URL}/data`)
-        const data=await res.json().finally(()=>setLoading(false))
-        console.log(data)
-        setStudentData(data)
-        localStorage.setItem('studentsData',JSON.stringify(data))
-      }
-      get()
-    }, [])
+      };
+    
+      getStudentsData();
+    }, []);
+    
 
   return (
     <StudentContext.Provider value={{ studentsDatas, loading }}>
