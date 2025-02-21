@@ -6,8 +6,9 @@ import feedbackRoutes from "./routes/feedbackRoutes.js";
 dotenv.config();
 
 const app = express();
+
 app.use(cors({
-    origin: "http://localhost:5173", 
+    origin: process.env.CORS_ORIGIN, 
 }));
 app.use(express.json());
 
